@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cyber Review Lab｜資安雙語題庫</title>
+  <style>
+    :root {
+      --ink: #14213d;
+      --muted: #667085;
+      --paper: #fffdf8;
+      --panel: #ffffff;
+      --line: #e5e7eb;
+      --navy: #112240;
+      --cyan: #25b6c8;
+      --cyan-soft: #e8f9fb;
+      --gold: #f4b942;
+      --green: #16845b;
+      --green-soft: #e9f8f1;
+      --red: #c2414b;
+      --red-soft: #fff0f1;
+      --shadow: 0 18px 50px rgba(17, 34, 64, .12);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(37,182,200,.14), transparent 26rem),
+        linear-gradient(180deg, #f7fbfc 0, var(--paper) 32rem);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Noto Sans TC", "PingFang TC", sans-serif;
+      min-height: 100vh;
+    }
+    button, select { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    header { padding: 30px 0 18px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: .02em; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
+      color: white; background: linear-gradient(145deg, var(--navy), #214d6d); box-shadow: var(--shadow);
+    }
+    .hero {
+      margin-top: 24px; padding: clamp(25px, 5vw, 52px); border-radius: 30px;
+      color: white; overflow: hidden; position: relative;
+      background: linear-gradient(125deg, #10213e 0%, #173b5a 60%, #126c78 100%);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: ""; position: absolute; width: 330px; height: 330px; right: -100px; top: -160px;
+      border: 58px solid rgba(255,255,255,.08); border-radius: 50%;
+    }
+    .eyebrow { color: #8be4ec; font-size: .82rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 12px 0 13px; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.02; max-width: 780px; }
+    .hero p { color: #d9e8ee; max-width: 650px; font-size: 1.05rem; line-height: 1.75; margin: 0; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; max-width: 720px; }
+    .stat { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.14); padding: 15px; border-radius: 16px; backdrop-filter: blur(8px); }
+    .stat strong { display: block; font-size: 1.35rem; }
+    .stat span { color: #c8dbe3; font-size: .78rem; }
+    .toolbar {
+      position: sticky; top: 10px; z-index: 10; margin: 18px 0; padding: 12px;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      background: rgba(255,255,255,.92); border: 1px solid rgba(229,231,235,.8);
+      border-radius: 18px; box-shadow: 0 10px 35px rgba(17,34,64,.09); backdrop-filter: blur(12px);
+    }
+    .toolbar select, .ghost {
+      min-height: 42px; border: 1px solid var(--line); background: white; color: var(--ink);
+      border-radius: 12px; padding: 0 13px; font-weight: 750;
+    }
+    .ghost:hover { border-color: var(--cyan); color: #087586; }
+    .ghost.active { background: var(--cyan-soft); border-color: var(--cyan); color: #087586; }
+    .toolbar .spacer { flex: 1; }
+    .progress-label { font-size: .86rem; color: var(--muted); font-weight: 750; }
+    .progress-track { width: min(210px, 30vw); height: 9px; background: #edf0f3; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), #36cf96); width: 0; transition: width .3s ease; }
+    main { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; padding-bottom: 50px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .question-card { padding: clamp(22px, 4vw, 38px); }
+    .question-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .pill { display: inline-flex; align-items: center; border-radius: 99px; padding: 7px 11px; font-size: .76rem; font-weight: 900; background: var(--cyan-soft); color: #087586; }
+    .number { color: var(--muted); font-weight: 850; font-size: .88rem; }
+    .language-block { margin-bottom: 24px; }
+    .lang-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--muted); font-size: .77rem; font-weight: 900; letter-spacing: .09em; }
+    .question-text { margin: 0; font-size: clamp(1.18rem, 2vw, 1.48rem); line-height: 1.55; font-weight: 850; }
+    .translation { padding: 17px 18px; border-left: 4px solid var(--gold); background: #fff9e9; border-radius: 0 13px 13px 0; }
+    .translation .question-text { font-size: 1.08rem; }
+    .options { display: grid; gap: 11px; margin-top: 24px; }
+    .option {
+      width: 100%; display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start;
+      text-align: left; border: 1px solid var(--line); border-radius: 15px; background: white;
+      padding: 14px; color: var(--ink); transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .option:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--cyan); background: #fbfeff; }
+    .option-key { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: #f1f4f7; font-weight: 950; }
+    .option-en { font-weight: 800; line-height: 1.45; }
+    .option-zh { color: var(--muted); font-size: .91rem; line-height: 1.5; margin-top: 3px; }
+    .option.selected { border-color: #7d9eaa; background: #f6fafb; }
+    .option.correct { border-color: var(--green); background: var(--green-soft); }
+    .option.wrong { border-color: var(--red); background: var(--red-soft); }
+    .option.correct .option-key { background: var(--green); color: white; }
+    .option.wrong .option-key { background: var(--red); color: white; }
+    .actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+    .primary { border: 0; border-radius: 13px; min-height: 46px; padding: 0 20px; color: white; background: var(--navy); font-weight: 900; box-shadow: 0 9px 22px rgba(17,34,64,.2); }
+    .primary:hover { background: #1c3d61; }
+    .primary:disabled { opacity: .42; cursor: not-allowed; }
+    .explanation { display: none; margin-top: 23px; border-radius: 16px; padding: 18px; line-height: 1.7; }
+    .explanation.show { display: block; animation: reveal .22s ease; }
+    .explanation.good { background: var(--green-soft); border: 1px solid #b4e5cf; }
+    .explanation.bad { background: var(--red-soft); border: 1px solid #f2c6ca; }
+    .result-title { font-size: 1.04rem; font-weight: 950; margin-bottom: 6px; }
+    .answer-line { font-weight: 850; margin-bottom: 7px; }
+    .sidebar { padding: 18px; position: sticky; top: 84px; }
+    .sidebar h2 { font-size: 1rem; margin: 0 0 12px; }
+    .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; max-height: 465px; overflow: auto; padding-right: 4px; }
+    .qdot { aspect-ratio: 1; border-radius: 9px; border: 1px solid var(--line); background: white; color: var(--muted); font-size: .74rem; font-weight: 850; }
+    .qdot:hover, .qdot.current { border-color: var(--cyan); color: #087586; }
+    .qdot.correct { color: white; background: var(--green); border-color: var(--green); }
+    .qdot.wrong { color: white; background: var(--red); border-color: var(--red); }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; color: var(--muted); font-size: .74rem; margin-top: 13px; }
+    .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 4px; }
+    .shortcut { margin-top: 17px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; line-height: 1.6; }
+    .empty { padding: 55px 20px; text-align: center; color: var(--muted); }
+    @keyframes reveal { from { opacity: 0; transform: translateY(5px); } }
+    @media (max-width: 860px) {
+      main { grid-template-columns: 1fr; }
+      .sidebar { position: static; order: -1; }
+      .question-grid { grid-template-columns: repeat(10, 1fr); max-height: 130px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 20px, 1180px); }
+      header { padding-top: 18px; }
+      .hero { border-radius: 22px; }
+      .toolbar { top: 5px; }
+      .toolbar .spacer { display: none; }
+      .progress-label, .progress-track { width: 100%; }
+      .question-grid { grid-template-columns: repeat(8, 1fr); }
+      .question-card { border-radius: 18px; }
+      .option { grid-template-columns: 34px 1fr; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><span class="brand-mark">CR</span> Cyber Review Lab</div>
+      <section class="hero">
+        <div class="eyebrow">Bilingual Security Tutor</div>
+        <h1>把 120 題資安複習題<br>真正學會。</h1>
+        <p>保留原始英文，搭配繁體中文翻譯。每題立即判斷對錯、顯示正解與觀念解析，並自動收集錯題。</p>
+        <div class="stats">
+          <div class="stat"><strong id="totalStat">120</strong><span>總題數</span></div>
+          <div class="stat"><strong id="doneStat">0</strong><span>已完成</span></div>
+          <div class="stat"><strong id="correctStat">0</strong><span>答對</span></div>
+          <div class="stat"><strong id="accuracyStat">—</strong><span>正確率</span></div>
+        </div>
+      </section>
+    </header>
+
+    <nav class="toolbar" aria-label="題庫工具列">
+      <select id="categoryFilter" aria-label="選擇分類"></select>
+      <select id="modeFilter" aria-label="選擇練習模式">
+        <option value="all">全部題目</option>
+        <option value="unanswered">尚未作答</option>
+        <option value="wrong">錯題重練</option>
+        <option value="correct">已答對</option>
+      </select>
+      <button class="ghost active" id="translationToggle" type="button">中文翻譯：開</button>
+      <button class="ghost" id="randomButton" type="button">隨機一題</button>
+      <button class="ghost" id="resetButton" type="button">清除進度</button>
+      <span class="spacer"></span>
+      <span class="progress-label" id="progressLabel">已完成 0 / 120</span>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+    </nav>
+
+    <main>
+      <section class="card question-card" id="questionCard"></section>
+      <aside class="card sidebar">
+        <h2>題目導覽</h2>
+        <div class="question-grid" id="questionGrid"></div>
+        <div class="legend">
+          <span><i style="background:#16845b"></i>答對</span>
+          <span><i style="background:#c2414b"></i>答錯</span>
+          <span><i style="background:#fff;border:1px solid #cfd4dc"></i>未答</span>
+        </div>
+        <div class="shortcut">鍵盤：按 1–4 直接作答，左右方向鍵切換題目。</div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const QUESTIONS = [{"id":1,"category":"道德駭客與滲透測試","questionEn":"What is the most critical \"deadly mistake\" an ethical hacker can make before starting a test?","questionZh":"道德駭客在開始測試前，最致命的錯誤是什麼？","optionsEn":["Not using Linux","Not getting prior approval in writing","Using free tools","Not knowing how to code"],"optionsZh":["不使用 Linux","未事先取得書面許可","使用免費工具","不會寫程式"],"answer":1,"explanation":"沒有書面授權，技術測試可能被視為未經授權的存取，帶來法律與營運風險。"},{"id":2,"category":"道德駭客與滲透測試","questionEn":"When obtaining documented approval, what must be included?","questionZh":"取得書面許可時，必須包含哪些內容？","optionsEn":["A list of all passwords","The hacker's home address","The plan, schedule, and systems to test","A guarantee to find all vulnerabilities"],"optionsZh":["所有密碼清單","駭客住址","測試計畫、時程與系統範圍","保證找出所有弱點"],"answer":2,"explanation":"授權文件必須清楚定義範圍、方法與時間，讓雙方知道哪些行為被允許。"},{"id":3,"category":"道德駭客與滲透測試","questionEn":"Is it possible to find all vulnerabilities during a security test?","questionZh":"安全測試有可能找出所有弱點嗎？","optionsEn":["Yes, if you use the right tools","Yes, if you are a certified expert","No, because so many known and unknown vulnerabilities exist","No, because clients won't let you see everything"],"optionsZh":["有，只要工具正確","有，只要是認證專家","沒有，因為已知與未知弱點非常多","沒有，因為客戶不會提供全部資訊"],"answer":2,"explanation":"測試只能反映特定時間、範圍與方法下的發現，零日弱點和環境變化都使全面保證不可能。"},{"id":4,"category":"道德駭客與滲透測試","questionEn":"Regarding security vulnerabilities, which of the following is true?","questionZh":"關於安全弱點，下列何者正確？","optionsEn":["100 percent, ironclad security is attainable","Maintaining 100 percent security is not attainable","One test is enough to eliminate all risks","Patching and hardening systems is useless"],"optionsZh":["可以達到百分之百滴水不漏的安全","無法持續維持百分之百安全","一次測試即可消除所有風險","修補與強化系統毫無用處"],"answer":1,"explanation":"安全是持續管理風險的過程，不是一次完成且永久有效的狀態。"},{"id":5,"category":"道德駭客與滲透測試","questionEn":"Why must ethical hacking tests be performed periodically?","questionZh":"為什麼道德駭客測試必須定期執行？","optionsEn":["To charge the client more money","Because new threats and vulnerabilities surface continually","Because software never changes","To practice using new tools"],"optionsZh":["為了多收費","因為新威脅與弱點持續出現","因為軟體永遠不變","為了練習新工具"],"answer":1,"explanation":"系統、設定與攻擊手法都會改變，因此舊測試結果會逐漸失去時效。"},{"id":6,"category":"道德駭客與滲透測試","questionEn":"What does a \"good ethical hacker\" know?","questionZh":"優秀的道德駭客知道什麼？","optionsEn":["Everything about information security","Their limitations and where to get answers","Only how to use one specific tool","How to bypass the law"],"optionsZh":["知道所有資安知識","知道自己的限制以及去哪裡找答案","只會一種工具","知道如何規避法律"],"answer":1,"explanation":"專業能力也包含辨識未知、查證資訊和適時尋求專家協助。"},{"id":7,"category":"道德駭客與滲透測試","questionEn":"How should an ethical hacker view the target network?","questionZh":"道德駭客應該從什麼角度看待目標網路？","optionsEn":["From a manager's viewpoint","From a hacker's viewpoint","Only from the internal network","From a non-technical perspective"],"optionsZh":["管理者角度","攻擊者角度","只從內部網路","非技術角度"],"answer":1,"explanation":"以攻擊者視角思考，才能找出真實攻擊路徑與防禦盲點。"},{"id":8,"category":"道德駭客與滲透測試","questionEn":"Which systems should an ethical hacker focus on?","questionZh":"道德駭客應聚焦哪些系統？","optionsEn":["Standalone desktops with no network card","The most expensive hardware","Systems and operations that matter most","Only the oldest systems"],"optionsZh":["沒有網卡的獨立桌機","最昂貴的硬體","對組織最重要的系統與營運","只有最舊的系統"],"answer":2,"explanation":"測試優先順序應由業務影響與風險決定，而不是價格或年齡。"},{"id":9,"category":"道德駭客與滲透測試","questionEn":"What is a risk of \"pounding production systems\" at the wrong time?","questionZh":"在錯誤時間猛烈測試正式系統有什麼風險？","optionsEn":["It might improve system performance","It could take down critical systems at the worst moment","Managers will be impressed by the speed","It saves the company money"],"optionsZh":["改善效能","可能在最糟時刻癱瘓關鍵系統","管理者會欣賞速度","替公司省錢"],"answer":1,"explanation":"高強度掃描或利用可能耗盡資源、觸發故障，因此必須安排時段並準備復原方案。"},{"id":10,"category":"道德駭客與滲透測試","questionEn":"If you outsource security testing, what is your responsibility?","questionZh":"若將安全測試外包，你的責任是什麼？","optionsEn":["To stay involved throughout the entire process","To hand over everything and forget about it","To never talk to the third party","To do the work yourself instead"],"optionsZh":["全程持續參與","交出去後完全不管","絕不與第三方溝通","改成全部自己做"],"answer":0,"explanation":"委外不等於轉移責任；組織仍需管理範圍、風險、溝通和成果。"},{"id":11,"category":"道德駭客與滲透測試","questionEn":"Which term is defined as \"a test evaluating the strengths of all security controls\"?","questionZh":"哪個名詞是「評估所有安全控制強度的測試」？","optionsEn":["Port Scanning","Social Engineering","Penetration Test","Intelligence Gathering"],"optionsZh":["連接埠掃描","社交工程","滲透測試","情報蒐集"],"answer":2,"explanation":"滲透測試會綜合評估程序、營運與技術控制能否抵抗實際攻擊。"},{"id":12,"category":"道德駭客與滲透測試","questionEn":"Which compliance standard requires organizations to perform penetration tests at least once a year?","questionZh":"哪項合規標準要求組織至少每年執行一次滲透測試？","optionsEn":["HIPAA","PCI-DSS","CEH","GPEN"],"optionsZh":["HIPAA","PCI-DSS","CEH","GPEN"],"answer":1,"explanation":"PCI DSS 對持卡人資料環境訂有定期滲透測試要求；CEH 與 GPEN 是證照。"},{"id":13,"category":"道德駭客與滲透測試","questionEn":"Which viewpoint simulates threats originating from within the trusted network environment?","questionZh":"哪個觀點模擬來自受信任內部網路的威脅？","optionsEn":["External Attacker","Internal/Malicious Employee","Overt Testing","Reconnaissance"],"optionsZh":["外部攻擊者","內部／惡意員工","公開測試","偵察"],"answer":1,"explanation":"內部測試模擬員工、承包商或已進入內網的攻擊者。"},{"id":14,"category":"道德駭客與滲透測試","questionEn":"What is an advantage of \"Overt Penetration Testing\"?","questionZh":"公開式滲透測試的優點是什麼？","optionsEn":["It tests active incident response","Access to insider organizational knowledge","It is the most realistic simulation","It is performed without the IT team's knowledge"],"optionsZh":["測試主動事件應變","可取得組織內部知識","是最真實的模擬","IT 團隊完全不知情"],"answer":1,"explanation":"公開測試中相關人員知情，測試者可獲得內部資訊並提高測試效率與覆蓋率。"},{"id":15,"category":"道德駭客與滲透測試","questionEn":"What is the purpose of the \"Reconnaissance\" phase?","questionZh":"偵察階段的目的是什麼？","optionsEn":["To exploit vulnerabilities","To discover as much information about a target as possible without network contact","To write the final report","To crash the target's server"],"optionsZh":["利用弱點","在不接觸目標網路下盡量蒐集資訊","撰寫最終報告","讓伺服器當機"],"answer":1,"explanation":"被動偵察使用公開來源建立目標輪廓，盡量避免直接觸碰目標系統。"},{"id":16,"category":"道德駭客與滲透測試","questionEn":"Which tool is used for discovering organization info via WHOIS?","questionZh":"哪個工具可透過 WHOIS 發現組織資訊？","optionsEn":["Nmap","Nessus","whois","Medusa"],"optionsZh":["Nmap","Nessus","whois","Medusa"],"answer":2,"explanation":"whois 查詢網域註冊與管理資訊；Nmap 和 Nessus 的用途不同。"},{"id":17,"category":"道德駭客與滲透測試","questionEn":"Which command is used in Nmap to perform a scan?","questionZh":"哪個 Nmap 指令用來執行掃描？","optionsEn":["ifconfig -a","apt-get update","nmap -sS [IP address]","whois target_domain"],"optionsZh":["ifconfig -a","apt-get update","nmap -sS [IP 位址]","whois target_domain"],"answer":2,"explanation":"`nmap -sS` 會執行 TCP SYN 掃描，是常見的連接埠探索方式。"},{"id":18,"category":"道德駭客與滲透測試","questionEn":"Which tool is primarily used for \"Remote vulnerability scanning\"?","questionZh":"哪個工具主要用於遠端弱點掃描？","optionsEn":["HTTrack","Nessus","Google Search","theHarvester"],"optionsZh":["HTTrack","Nessus","Google 搜尋","theHarvester"],"answer":1,"explanation":"Nessus 會以外掛檢查遠端主機的已知弱點與錯誤設定。"},{"id":19,"category":"道德駭客與滲透測試","questionEn":"In the reporting phase, vulnerabilities should be:","questionZh":"在報告階段，弱點應該如何處理？","optionsEn":["Listed alphabetically","Prioritized","Hidden from the manager","Written in highly technical jargon"],"optionsZh":["依字母排序","排定優先順序","對管理者隱藏","全用高度技術術語"],"answer":1,"explanation":"依嚴重度、可利用性與業務影響排序，才能讓修補資源先投入最大風險。"},{"id":20,"category":"道德駭客與滲透測試","questionEn":"When e-mailing the final report, what must you do?","questionZh":"用電子郵件寄送最終報告時，必須做什麼？","optionsEn":["Use a public cloud link","Encrypt all attachments","Send it to the entire company","Keep it in plain text"],"optionsZh":["使用公開雲端連結","加密所有附件","寄給全公司","使用純文字"],"answer":1,"explanation":"滲透測試報告包含敏感弱點資料，傳輸與附件都應受加密保護。"},{"id":21,"category":"道德駭客與滲透測試","questionEn":"What should be removed from the final report to prevent malicious use by others?","questionZh":"最終報告中應移除什麼，以防他人惡意使用？","optionsEn":["The dates of testing","Recommendations for improvement","Specific tools used and actual testing steps","The summary of vulnerabilities"],"optionsZh":["測試日期","改善建議","特定工具與實際測試步驟","弱點摘要"],"answer":2,"explanation":"過度具體的利用步驟與工具參數可能成為攻擊指南；管理報告應保留風險和修補資訊。"},{"id":22,"category":"道德駭客與滲透測試","questionEn":"Which command is used to bring a network interface \"up\" in Linux?","questionZh":"Linux 中哪個指令可啟用網路介面？","optionsEn":["poweroff","ifconfig eth0 up","apt-get install","dig @target_ip"],"optionsZh":["poweroff","ifconfig eth0 up","apt-get install","dig @target_ip"],"answer":1,"explanation":"`ifconfig eth0 up` 會把指定介面切換為啟用狀態。"},{"id":23,"category":"道德駭客與滲透測試","questionEn":"What is the purpose of \"Vulnerability Testing and Exploitation\"?","questionZh":"弱點測試與利用的目的是什麼？","optionsEn":["To gather contact emails","To check hosts for known vulnerabilities and assess severity","To set up a WHOIS server","To practice typing"],"optionsZh":["蒐集聯絡信箱","檢查主機已知弱點並評估嚴重度","建立 WHOIS 伺服器","練習打字"],"answer":1,"explanation":"此階段驗證弱點是否存在、能否被利用，以及可能造成的影響。"},{"id":24,"category":"道德駭客與滲透測試","questionEn":"Which phase involves organizing information by hosts, services, and identified hazards?","questionZh":"哪個階段會依主機、服務與已識別危害整理資訊？","optionsEn":["Exploitation","Reconnaissance","Reporting","Scanning"],"optionsZh":["利用","偵察","報告","掃描"],"answer":2,"explanation":"報告階段會把零散發現整理成可理解、可排序和可採取行動的結果。"},{"id":25,"category":"道德駭客與滲透測試","questionEn":"What mindset must organizations employ to survive modern threats?","questionZh":"組織要在現代威脅下生存，必須採用哪種思維？","optionsEn":["A defensive-only mindset","A hacker mindset","A bureaucratic mindset","A profit-only mindset"],"optionsZh":["純防禦思維","駭客思維","官僚思維","只看獲利"],"answer":1,"explanation":"理解攻擊者目標與路徑，能幫助組織主動找出防禦缺口。"},{"id":26,"category":"MITRE 與攻擊觀念","questionEn":"In MITRE ATT&CK, what term describes what an attacker wants to achieve?","questionZh":"在 MITRE ATT&CK 中，哪個名詞描述攻擊者想達成的目標？","optionsEn":["Procedure","Technique","Tactic","ID"],"optionsZh":["程序","技術","戰術","ID"],"answer":2,"explanation":"Tactic 是攻擊者在某階段的高階目的，例如 Initial Access 或 Persistence。"},{"id":27,"category":"MITRE 與攻擊觀念","questionEn":"What is the primary purpose of a Fake WAP (Fake Wireless Access Point)?","questionZh":"假無線基地台（Fake WAP）的主要目的是什麼？","optionsEn":["Increase network bandwidth","Conduct Man-in-the-Middle (MITM) attacks or steal credentials","Encrypt user data","Improve server performance"],"optionsZh":["增加頻寬","進行中間人攻擊或竊取憑證","加密資料","改善伺服器效能"],"answer":1,"explanation":"惡意基地台誘使使用者連線，讓攻擊者攔截流量或設置假登入頁。"},{"id":28,"category":"MITRE 與攻擊觀念","questionEn":"An attacker uses credentials leaked from one website to attempt logins on other platforms. What type of attack is this?","questionZh":"攻擊者把某網站外洩的帳密拿去嘗試登入其他平台，這是什麼攻擊？","optionsEn":["SQL Injection","Credential Reuse","Browser Hijacker","Bait and Switch"],"optionsZh":["SQL 注入","憑證重複使用","瀏覽器劫持","誘餌調包"],"answer":1,"explanation":"使用者重複使用密碼時，一處外洩就可能讓多個服務同時失守。"},{"id":29,"category":"MITRE 與攻擊觀念","questionEn":"Which measure is most appropriate for preventing Session Hijacking?","questionZh":"防止工作階段劫持最適合的措施是什麼？","optionsEn":["Use HTTPS and HttpOnly Cookies","Install an ad blocker","Download software only from official websites","Change desktop wallpapers regularly"],"optionsZh":["使用 HTTPS 與 HttpOnly Cookie","安裝廣告阻擋器","只從官網下載軟體","定期更換桌布"],"answer":0,"explanation":"HTTPS 保護傳輸中的 Cookie，HttpOnly 可降低前端腳本讀取 Cookie 的風險。"},{"id":30,"category":"MITRE 與攻擊觀念","questionEn":"In the MITRE ATT&CK framework, what describes what an attacker specifically did in a real-world case?","questionZh":"在 MITRE ATT&CK 中，哪個名詞描述攻擊者在真實案例中具體做了什麼？","optionsEn":["Tactic","Technique","Procedure","Mitigation"],"optionsZh":["戰術","技術","程序","緩解措施"],"answer":2,"explanation":"Procedure 是某個威脅行為者實際實施技術的具體步驟或案例。"},{"id":31,"category":"MITRE 與攻擊觀念","questionEn":"Fake WAP attacks are most likely to occur in which environment?","questionZh":"假 WAP 攻擊最可能發生在哪種環境？","optionsEn":["Private home offices","Public places such as airports and coffee shops","Inside data centers","Offline environments"],"optionsZh":["私人家庭辦公室","機場、咖啡店等公共場所","資料中心內","離線環境"],"answer":1,"explanation":"公共場所常有大量使用者尋找免費 Wi-Fi，也較難辨識哪個基地台是真的。"},{"id":32,"category":"MITRE 與攻擊觀念","questionEn":"How does a Bait and Switch attack typically work?","questionZh":"誘餌調包（Bait and Switch）攻擊通常如何運作？","optionsEn":["Directly brute-force passwords","Display a legitimate link first, then redirect users to malicious content","Steal session cookies","Attack a database backend"],"optionsZh":["直接暴力破解密碼","先顯示正常連結，再把使用者導向惡意內容","竊取 Session Cookie","攻擊資料庫後端"],"answer":1,"explanation":"攻擊者先用看似可信的內容取得點擊，再替換或重新導向到惡意目的地。"},{"id":33,"category":"MITRE 與攻擊觀念","questionEn":"Which is a recommended defense against SQL Injection?","questionZh":"防禦 SQL 注入的建議措施是什麼？","optionsEn":["Use a VPN","Use Parameterized Queries","Enable MFA","Review email logs"],"optionsZh":["使用 VPN","使用參數化查詢","啟用 MFA","檢查郵件紀錄"],"answer":1,"explanation":"參數化查詢將資料和 SQL 指令分離，避免輸入被解讀成查詢語法。"},{"id":34,"category":"MITRE 與攻擊觀念","questionEn":"When an attacker positions themselves between two communicating parties to sniff or modify data, what is this called in MITRE?","questionZh":"攻擊者位於通訊雙方之間，嗅探或修改資料，在 MITRE 中稱為什麼？","optionsEn":["Adversary-in-the-Middle (T1557)","Valid Accounts","Phishing","Boot or Logon Initialization"],"optionsZh":["Adversary-in-the-Middle（T1557）","有效帳號","網路釣魚","開機或登入初始化"],"answer":0,"explanation":"T1557 描述攻擊者介入雙方通訊以攔截或操控資料。"},{"id":35,"category":"MITRE 與攻擊觀念","questionEn":"In MITRE ATT&CK, Initial Access belongs to which category?","questionZh":"在 MITRE ATT&CK 中，Initial Access 屬於哪個類別？","optionsEn":["Technique","Procedure","Tactic","Mitigation"],"optionsZh":["技術","程序","戰術","緩解措施"],"answer":2,"explanation":"Initial Access 是描述進入目標環境這個目的的 Tactic。"},{"id":36,"category":"MITRE 與攻擊觀念","questionEn":"Which data source is most useful for detecting attackers using Valid Accounts?","questionZh":"偵測攻擊者使用有效帳號時，哪種資料來源最有用？","optionsEn":["Browser settings","Login logs or anomalous IP records","SQL query syntax","Ad-blocking records"],"optionsZh":["瀏覽器設定","登入紀錄或異常 IP 紀錄","SQL 查詢語法","廣告阻擋紀錄"],"answer":1,"explanation":"登入時間、來源 IP、裝置與地點異常能揭露遭竊帳號的使用。"},{"id":37,"category":"MITRE 與攻擊觀念","questionEn":"What is the best recommendation for preventing Credential Reuse?","questionZh":"防止憑證重複使用的最佳建議是什麼？","optionsEn":["Use a VPN","Use a password manager and enable MFA","Install antivirus software","Avoid public Wi-Fi"],"optionsZh":["使用 VPN","使用密碼管理器並啟用 MFA","安裝防毒軟體","避免公共 Wi-Fi"],"answer":1,"explanation":"密碼管理器可為每個網站建立不同密碼，MFA 則在密碼外洩時增加一道防線。"},{"id":38,"category":"MITRE 與攻擊觀念","questionEn":"During Session Hijacking, what information is typically stolen?","questionZh":"工作階段劫持通常會竊取什麼資訊？","optionsEn":["The user's physical hardware","Session Cookie or Session ID","The user's BIOS password","The router's SSID"],"optionsZh":["使用者硬體","Session Cookie 或 Session ID","BIOS 密碼","路由器 SSID"],"answer":1,"explanation":"取得有效的工作階段識別資訊後，攻擊者可能不需密碼就冒用已登入狀態。"},{"id":39,"category":"MITRE 與攻擊觀念","questionEn":"Exploit Public-Facing Application (T1190) is commonly associated with which attack method?","questionZh":"利用公開應用程式（T1190）通常與哪種攻擊方法相關？","optionsEn":["SQL Injection","Phishing","Fake WAP","Browser Hijacker"],"optionsZh":["SQL 注入","網路釣魚","假 WAP","瀏覽器劫持"],"answer":0,"explanation":"SQL 注入是利用對外 Web 應用程式弱點取得初始存取的典型方式。"},{"id":40,"category":"MITRE 與攻擊觀念","questionEn":"What is the primary purpose of the MITRE ATT&CK framework?","questionZh":"MITRE ATT&CK 架構的主要目的是什麼？","optionsEn":["Transform unstructured security incidents into structured attack behavior analysis","Used only for data backup","Replace all firewalls","Specifically for software development"],"optionsZh":["將零散資安事件轉成結構化攻擊行為分析","只用於資料備份","取代所有防火牆","專供軟體開發"],"answer":0,"explanation":"ATT&CK 用共同語言整理戰術、技術與程序，協助偵測、分析與防禦。"},{"id":41,"category":"MITRE 與攻擊觀念","questionEn":"Which attack belongs to the category of Social Engineering?","questionZh":"哪種攻擊屬於社交工程？","optionsEn":["MAC Spoofing","Watering Hole Attack","ARP Spoofing","DoS"],"optionsZh":["MAC 偽造","水坑攻擊","ARP 偽造","阻斷服務"],"answer":1,"explanation":"水坑攻擊會鎖定目標族群常造訪的網站，利用信任和使用習慣誘使受害者中招。"},{"id":42,"category":"Web 應用安全","questionEn":"Which of the following application security risks occurs when untrusted data is sent to an interpreter as part of a command or query, according to the OWASP?","questionZh":"依 OWASP 定義，未受信任資料被當成指令或查詢的一部分送入直譯器，屬於哪種應用安全風險？","optionsEn":["A6 – security misconfiguration","A3 – Sensitive data exposure","A1 – injection","A4 – XML external entity (XXE)"],"optionsZh":["A6 安全設定錯誤","A3 敏感資料暴露","A1 注入","A4 XML 外部實體"],"answer":2,"explanation":"注入發生在資料和指令未被妥善分離，導致直譯器執行攻擊者輸入。"},{"id":43,"category":"Web 應用安全","questionEn":"Which of the following security risks can disclose internal files using the file URI handler, remote code execution, and DoS attacks such as the billion laughs attack?","questionZh":"哪種風險可利用 file URI 洩漏內部檔案、造成遠端程式碼執行，並引發 billion laughs 阻斷服務？","optionsEn":["XML external entity (XXE)","Command injection","Broken authentication","Cross-site scripting (XSS)"],"optionsZh":["XML 外部實體（XXE）","命令注入","身分驗證失效","XSS"],"answer":0,"explanation":"XXE 利用不安全的 XML 外部實體解析讀取本機或遠端資源；實體展開也可耗盡資源。"},{"id":44,"category":"Web 應用安全","questionEn":"Which of the following practices is NOT a countermeasure to defend against web server attacks?","questionZh":"下列哪項不是防禦 Web 伺服器攻擊的措施？","optionsEn":["Physically protect the machine","Install IIS server on a domain controller","Store website files on a separate drive","Screen and filter incoming traffic"],"optionsZh":["實體保護機器","將 IIS 安裝在網域控制站","網站檔案放在獨立磁碟","篩選進入流量"],"answer":1,"explanation":"把 Web 伺服器放在網域控制站會擴大權限與攻擊面，違反角色分離原則。"},{"id":45,"category":"Web 應用安全","questionEn":"In which layer of the vulnerability stack do security professionals configure solutions such as IDS and IPS?","questionZh":"安全人員會在弱點堆疊的哪一層設定 IDS、IPS 等解決方案？","optionsEn":["Layer 3","Layer 5","Layer 7","Layer 1"],"optionsZh":["第 3 層","第 5 層","第 7 層","第 1 層"],"answer":0,"explanation":"IDS/IPS 通常部署在網路基礎設施層，監看與阻擋網路流量中的攻擊。"},{"id":46,"category":"Web 應用安全","questionEn":"Identify the type of SQL injection technique used by the attacker when they cannot directly exploit any other techniques.","questionZh":"當攻擊者無法直接使用其他技巧時，會採用哪種 SQL 注入技術？","optionsEn":["In-band SQL injection","Error-based SQL injection","Blind SQL injection","Out-of-band SQL injection"],"optionsZh":["同頻 SQL 注入","錯誤型 SQL 注入","盲目 SQL 注入","帶外 SQL 注入"],"answer":2,"explanation":"盲注無法直接看到資料庫輸出，攻擊者改由布林結果或時間差逐步推斷資訊。"},{"id":47,"category":"無線網路安全","questionEn":"Which of the following terms is a spread spectrum technique that multiplies the original data signal with a pseudo-random noise-spreading code?","questionZh":"哪個名詞是把原始資料訊號乘上偽隨機雜訊展頻碼的展頻技術？","optionsEn":["ISM band","BSSID","SSID","DSSS"],"optionsZh":["ISM 頻段","BSSID","SSID","DSSS"],"answer":3,"explanation":"DSSS 以展頻碼把訊號能量分散到較寬頻帶，提高抗干擾能力。"},{"id":48,"category":"無線網路安全","questionEn":"Identify the IEEE 802.16 standard.","questionZh":"IEEE 802.16 是哪個標準？","optionsEn":["Wi-Fi","WiMax","ZigBee","Bluetooth"],"optionsZh":["Wi-Fi","WiMax","ZigBee","Bluetooth"],"answer":1,"explanation":"IEEE 802.16 定義寬頻無線都會網路，常稱為 WiMax。"},{"id":49,"category":"無線網路安全","questionEn":"In which of the following attacks does an attacker create a soft AP on a laptop to make the laptop’s NIC appear as a legitimate AP?","questionZh":"哪種攻擊會在筆電上建立 Soft AP，讓網卡看起來像合法基地台？","optionsEn":["Ad-hoc connection","Honeypot AP","Unauthorized association","AP MAC spoofing"],"optionsZh":["Ad-hoc 連線","蜜罐 AP","未授權關聯","AP MAC 偽造"],"answer":2,"explanation":"Soft AP 可讓裝置同時連向企業網路並提供無線連線，形成未授權的橋接路徑。"},{"id":50,"category":"無線網路安全","questionEn":"Which mode of operation is responsible for Delivering password-based authentication using the SAE protocol?","questionZh":"哪種運作模式使用 SAE 協定提供密碼式驗證？","optionsEn":["WPA3-Personal","WPA3-Enterprise","WPA2-Enterprise","WPA2-Personal"],"optionsZh":["WPA3-Personal","WPA3-Enterprise","WPA2-Enterprise","WPA2-Personal"],"answer":0,"explanation":"WPA3-Personal 以 SAE 取代 WPA2-Personal 的傳統 PSK 握手，提升離線猜密碼的抵抗力。"},{"id":51,"category":"Web 應用安全","questionEn":"Which vulnerability involves exploiting authentication or session management functions to impersonate users?","questionZh":"哪種弱點會利用身分驗證或工作階段管理功能來冒充使用者？","optionsEn":["Injection","Broken Authentication","XXE","XSS"],"optionsZh":["注入","身分驗證失效","XXE","XSS"],"answer":1,"explanation":"登入、密碼重設或 Session 管理不當，都可能讓攻擊者取得他人身分。"},{"id":52,"category":"Web 應用安全","questionEn":"\"Parameter tampering\" is used to modify application data between which two entities?","questionZh":"參數竄改用來修改哪兩個實體之間的應用資料？","optionsEn":["Database and Server","Client and Server","Router and AP","OS and Kernel"],"optionsZh":["資料庫與伺服器","用戶端與伺服器","路由器與 AP","作業系統與核心"],"answer":1,"explanation":"攻擊者攔截或修改瀏覽器送往伺服器的參數，因此伺服器不能信任用戶端值。"},{"id":53,"category":"Web 應用安全","questionEn":"According to the sources, why are vulnerable components dangerous?","questionZh":"為什麼含弱點的元件很危險？","optionsEn":["They have no encryption","They often run with full privileges","They are only found on Windows","They slow down the network"],"optionsZh":["沒有加密","常以完整權限執行","只存在 Windows","讓網路變慢"],"answer":1,"explanation":"高權限元件一旦被利用，可能讓攻擊者取得與應用程式相同甚至更大的控制能力。"},{"id":54,"category":"Web 應用安全","questionEn":"Which tool supports the entire web application testing process, from mapping to exploiting vulnerabilities?","questionZh":"哪個工具支援從繪製應用結構到利用弱點的完整 Web 測試流程？","optionsEn":["Metasploit","Nikto","Burp Suite","Sn1per"],"optionsZh":["Metasploit","Nikto","Burp Suite","Sn1per"],"answer":2,"explanation":"Burp Suite 整合代理、爬行、重送、掃描與多種手動測試功能。"},{"id":55,"category":"Web 應用安全","questionEn":"Which is a recommended countermeasure for Sensitive Data Exposure?","questionZh":"敏感資料暴露的建議防禦措施是什麼？","optionsEn":["Generate encryption keys offline","Use weak algorithms for speed","Store session IDs in GET requests","Disable SSL"],"optionsZh":["離線產生加密金鑰","為了速度使用弱演算法","把 Session ID 放在 GET 請求","停用 SSL"],"answer":0,"explanation":"金鑰應以安全方式產生和保管；其他選項都會降低資料保護。"},{"id":56,"category":"Web 應用安全","questionEn":"To defend against SQL injection, developers should avoid building SQL statements directly from:","questionZh":"為防禦 SQL 注入，開發者應避免直接用什麼建立 SQL 敘述？","optionsEn":["Stored procedures","User input","Binary data","Parameters"],"optionsZh":["預存程序","使用者輸入","二進位資料","參數"],"answer":1,"explanation":"把未驗證輸入串接進 SQL，會讓資料被當成可執行語法。"},{"id":57,"category":"無線網路安全","questionEn":"What is the BSSID in wireless terminology?","questionZh":"無線網路術語中的 BSSID 是什麼？","optionsEn":["The name of the network","The MAC address of an Access Point","The frequency band","The connection process"],"optionsZh":["網路名稱","基地台的 MAC 位址","頻段","連線流程"],"answer":1,"explanation":"BSSID 通常識別特定 AP 無線介面；SSID 則是使用者看到的網路名稱。"},{"id":58,"category":"無線網路安全","questionEn":"Which spread spectrum method switches a carrier among many frequency channels?","questionZh":"哪種展頻方法會讓載波在多個頻率通道間切換？","optionsEn":["DSSS","OFDM","FHSS","MIMO-OFDM"],"optionsZh":["DSSS","OFDM","FHSS","MIMO-OFDM"],"answer":2,"explanation":"FHSS 依既定序列快速跳換頻率，以降低窄頻干擾的影響。"},{"id":59,"category":"無線網路安全","questionEn":"Which IEEE amendment specifies security mechanisms for 802.11 networks?","questionZh":"哪個 IEEE 修正案規範 802.11 網路的安全機制？","optionsEn":["802.11i","802.11b","802.16","802.11a"],"optionsZh":["802.11i","802.11b","802.16","802.11a"],"answer":0,"explanation":"802.11i 強化無線安全並成為 WPA2 的技術基礎。"},{"id":60,"category":"無線網路安全","questionEn":"Which encryption algorithm uses a 24-bit Initialization Vector (IV)?","questionZh":"哪個加密機制使用 24 位元初始化向量（IV）？","optionsEn":["WPA2","AES","WEP","TKIP"],"optionsZh":["WPA2","AES","WEP","TKIP"],"answer":2,"explanation":"WEP 的 24-bit IV 太短，容易重複並被用於破解金鑰。"},{"id":61,"category":"無線網路安全","questionEn":"What does WPA2 integrate for centralized client authentication?","questionZh":"WPA2 整合什麼來進行集中式用戶端驗證？","optionsEn":["PSK","EAP or RADIUS","SSID","SAE"],"optionsZh":["PSK","EAP 或 RADIUS","SSID","SAE"],"answer":1,"explanation":"企業模式通常透過 802.1X/EAP 與 RADIUS 伺服器集中驗證使用者。"},{"id":62,"category":"無線網路安全","questionEn":"Which protocol serves as the replacement for WEP in WPA?","questionZh":"WPA 中哪個協定取代 WEP？","optionsEn":["AES","TKIP","CCMP","GCMP"],"optionsZh":["AES","TKIP","CCMP","GCMP"],"answer":1,"explanation":"TKIP 是 WPA 為相容既有硬體而引入的過渡保護機制。"},{"id":63,"category":"無線網路安全","questionEn":"WPA3-Personal uses which protocol for key exchange?","questionZh":"WPA3-Personal 使用哪個協定進行金鑰交換？","optionsEn":["TKIP","MIC","Dragonfly","Kerberos"],"optionsZh":["TKIP","MIC","Dragonfly","Kerberos"],"answer":2,"explanation":"SAE 的密碼驗證金鑰交換建立在 Dragonfly 握手方法上。"},{"id":64,"category":"無線網路安全","questionEn":"A \"Soft AP\" attack allows an unauthorized connection to which entity?","questionZh":"Soft AP 攻擊會允許未授權連線到哪個實體？","optionsEn":["The Internet","The Enterprise network","A Bluetooth headset","A specific website"],"optionsZh":["網際網路","企業網路","藍牙耳機","特定網站"],"answer":1,"explanation":"遭控制或錯誤設定的筆電可把外部無線使用者橋接進企業內網。"},{"id":65,"category":"Web 應用安全","questionEn":"The \"billion laughs attack\" is associated with which vulnerability?","questionZh":"billion laughs attack 與哪種弱點相關？","optionsEn":["SQLi","XXE","SSRF","XSS"],"optionsZh":["SQLi","XXE","SSRF","XSS"],"answer":1,"explanation":"它利用 XML 實體遞迴展開造成記憶體或 CPU 耗盡，是 XXE／不安全 XML 解析問題。"},{"id":66,"category":"Bluetooth 與防禦","questionEn":"What is the goal of \"BluePrinting\" in Bluetooth attacks?","questionZh":"Bluetooth 攻擊中的 BluePrinting 目標是什麼？","optionsEn":["Crashing the device","Collecting information about manufacturer and firmware","Stealing documents","Modifying data"],"optionsZh":["讓裝置當機","蒐集製造商與韌體資訊","竊取文件","修改資料"],"answer":1,"explanation":"BluePrinting 先識別裝置型號、製造商與版本，供後續判斷可利用弱點。"},{"id":67,"category":"Bluetooth 與防禦","questionEn":"Which Bluetooth attack involves sending unsolicited messages?","questionZh":"哪種 Bluetooth 攻擊會傳送未經請求的訊息？","optionsEn":["Bluesmacking","Bluejacking","Bluesnarfing","Bluebugging"],"optionsZh":["Bluesmacking","Bluejacking","Bluesnarfing","Bluebugging"],"answer":1,"explanation":"Bluejacking 利用藍牙傳送未經請求的名片或訊息，通常偏向騷擾。"},{"id":68,"category":"Bluetooth 與防禦","questionEn":"The theft of information through a Bluetooth connection is called:","questionZh":"透過 Bluetooth 連線竊取資訊稱為什麼？","optionsEn":["Bluejacking","Bluesnarfing","BlueSniff","Bluebugging"],"optionsZh":["Bluejacking","Bluesnarfing","BlueSniff","Bluebugging"],"answer":1,"explanation":"Bluesnarfing 是未授權取得聯絡人、行事曆或其他裝置資料。"},{"id":69,"category":"Bluetooth 與防禦","questionEn":"Which attack overflows Bluetooth devices with random packets to cause a crash?","questionZh":"哪種攻擊用隨機封包淹沒 Bluetooth 裝置使其當機？","optionsEn":["Bluesmacking","Bluejacking","Bluebugging","KNOB attack"],"optionsZh":["Bluesmacking","Bluejacking","Bluebugging","KNOB 攻擊"],"answer":0,"explanation":"Bluesmacking 是針對藍牙裝置的阻斷服務，使用大量或異常封包耗盡資源。"},{"id":70,"category":"Bluetooth 與防禦","questionEn":"Which tool is used to decrypt WEP/WPA packets and strip wireless headers?","questionZh":"哪個工具可解密 WEP/WPA 封包並移除無線標頭？","optionsEn":["Airtun-ng","Easside-ng","Airdecap-ng","Airgraph-ng"],"optionsZh":["Airtun-ng","Easside-ng","Airdecap-ng","Airgraph-ng"],"answer":2,"explanation":"Airdecap-ng 用於解密擷取到的無線封包，並可輸出移除 802.11 標頭的流量。"},{"id":71,"category":"Bluetooth 與防禦","questionEn":"The KNOB attack exploits a vulnerability in Bluetooth to perform:","questionZh":"KNOB 攻擊利用 Bluetooth 弱點來做什麼？","optionsEn":["Denial of Service","Eavesdropping on shared data","Remote control","MAC spoofing"],"optionsZh":["阻斷服務","竊聽共享資料","遠端控制","MAC 偽造"],"answer":1,"explanation":"KNOB 迫使加密金鑰長度降低，使攻擊者更容易暴力破解並解密通訊。"},{"id":72,"category":"Bluetooth 與防禦","questionEn":"Which Bluetooth mode rejects every pairing request?","questionZh":"哪種 Bluetooth 模式會拒絕所有配對要求？","optionsEn":["Discoverable","Non-pairable","Pairable","Limited discoverable"],"optionsZh":["可被發現","不可配對","可配對","限制可被發現"],"answer":1,"explanation":"不可配對模式不接受新的配對請求，可縮小不必要的暴露面。"},{"id":73,"category":"Bluetooth 與防禦","questionEn":"What is a best practice for wireless configuration regarding SSID?","questionZh":"無線設定中，關於 SSID 的最佳實務是什麼？","optionsEn":["Broadcast the SSID","Use SSID hiding (cloaking)","Keep the default SSID","Use the SSID as a password"],"optionsZh":["廣播 SSID","隱藏 SSID（cloaking）","保留預設 SSID","把 SSID 當密碼"],"answer":1,"explanation":"依本題教材，關閉 SSID 廣播可降低一般使用者直接看到網路名稱；但它不能取代強加密與驗證。"},{"id":74,"category":"Bluetooth 與防禦","questionEn":"Where should a firewall be placed for wireless security?","questionZh":"為了無線安全，防火牆應放在哪裡？","optionsEn":["Behind the database","Between the AP and the corporate intranet","On the user's laptop","Outside the physical machine room"],"optionsZh":["資料庫後方","AP 與企業內網之間","只放使用者筆電上","實體機房外"],"answer":1,"explanation":"在無線區域與受信任內網之間設置防火牆，可控制和檢查跨區流量。"},{"id":75,"category":"Bluetooth 與防禦","questionEn":"Which tool is a \"centralized authentication and authorization management system\"?","questionZh":"哪個工具是集中式驗證與授權管理系統？","optionsEn":["RADIUS","Burp Suite","WiMax","Sn1per"],"optionsZh":["RADIUS","Burp Suite","WiMax","Sn1per"],"answer":0,"explanation":"RADIUS 集中處理網路存取的驗證、授權與記帳。"},{"id":76,"category":"Bluetooth 與防禦","questionEn":"Which Bluetooth threat involves terrorists sending false bomb threats?","questionZh":"哪種 Bluetooth 威脅涉及恐怖分子傳送假的炸彈威脅？","optionsEn":["Leakage of calendars","Sending SMS messages","Bugging devices","Causing financial losses"],"optionsZh":["行事曆外洩","傳送 SMS 訊息","竊聽裝置","造成財務損失"],"answer":1,"explanation":"遭控制的藍牙手機可能被濫用來發送威脅簡訊，並把責任指向裝置擁有者。"},{"id":77,"category":"安全強化","questionEn":"To prevent web application attacks, non-SSL requests should be:","questionZh":"為防止 Web 應用攻擊，非 SSL 請求應如何處理？","optionsEn":["Dropped","Redirected to the SSL page","Logged but allowed","Handled by Layer 3"],"optionsZh":["丟棄","重新導向 SSL 頁面","記錄後放行","由第 3 層處理"],"answer":1,"explanation":"將 HTTP 重新導向 HTTPS，可讓後續通訊使用加密連線；也應搭配 HSTS。"},{"id":78,"category":"安全強化","questionEn":"Which is NOT an injection type mentioned in the sources?","questionZh":"哪一項不是來源中提到的注入類型？","optionsEn":["Command injection","LDAP injection","SQL injection","CSS injection"],"optionsZh":["命令注入","LDAP 注入","SQL 注入","CSS 注入"],"answer":3,"explanation":"命令、LDAP 與 SQL 都是常見注入類型；CSS 注入不在本題列舉的來源清單。"},{"id":79,"category":"安全強化","questionEn":"Which wireless term describes the process of connecting a device to an AP?","questionZh":"哪個無線術語描述裝置連接 AP 的過程？","optionsEn":["Authentication","Association","Modulation","Sniffing"],"optionsZh":["驗證","關聯（Association）","調變","嗅探"],"answer":1,"explanation":"驗證確認身分或資格；Association 則建立用戶端與 AP 的 802.11 連線關係。"},{"id":80,"category":"安全強化","questionEn":"What is the character limit for an SSID?","questionZh":"SSID 的字元上限是多少？","optionsEn":["16","32","64","128"],"optionsZh":["16","32","64","128"],"answer":1,"explanation":"802.11 的 SSID 最長為 32 個八位元組，教材通常簡稱 32 個字元。"},{"id":81,"category":"安全強化","questionEn":"Which tool is used for automated scanning in web security?","questionZh":"哪個工具用於 Web 安全的自動化掃描？","optionsEn":["Burp Suite","OWASP Zed Attack Proxy","Nikto","Metasploit"],"optionsZh":["Burp Suite","OWASP Zed Attack Proxy","Nikto","Metasploit"],"answer":1,"explanation":"OWASP ZAP 提供自動爬行與主動掃描，常用於自動化 Web 弱點檢查。"},{"id":82,"category":"安全強化","questionEn":"To secure a database, testing teams should avoid constructing dynamic SQL with:","questionZh":"為保護資料庫，測試團隊應避免用什麼建立動態 SQL？","optionsEn":["Prepared statements","Concatenated input values","Stored procedures","Multi-layer validation"],"optionsZh":["Prepared statements","串接輸入值","預存程序","多層驗證"],"answer":1,"explanation":"字串串接會讓攻擊者控制查詢結構；應改用參數化查詢。"},{"id":83,"category":"安全強化","questionEn":"WPA3 authentication uses which integrity check mechanism?","questionZh":"WPA3 驗證使用哪種完整性檢查機制？","optionsEn":["BIP-GMAC-256","HMAC-MD5","MIC","SAE"],"optionsZh":["BIP-GMAC-256","HMAC-MD5","MIC","SAE"],"answer":0,"explanation":"WPA3 的高強度企業安全套件使用 BIP-GMAC-256 保護管理訊框完整性；SAE 是驗證與金鑰建立方法。"},{"id":84,"category":"安全強化","questionEn":"Which attack technique tricks users into connecting to a rogue AP by copying its SSID?","questionZh":"哪種攻擊會複製 SSID，誘騙使用者連上惡意 AP？","optionsEn":["Misconfigured AP","Honeypot AP","Unauthorized association","Bluetooth sniffing"],"optionsZh":["AP 設定錯誤","蜜罐 AP","未授權關聯","Bluetooth 嗅探"],"answer":1,"explanation":"惡意 AP 仿冒熟悉的 SSID，利用使用者信任誘使其連線。"},{"id":85,"category":"安全強化","questionEn":"Which wireless tool protects against denial-of-service and man-in-the-middle attacks?","questionZh":"哪個無線工具可防護阻斷服務與中間人攻擊？","optionsEn":["Weevely","Astra","RFProtect","Mole"],"optionsZh":["Weevely","Astra","RFProtect","Mole"],"answer":2,"explanation":"RFProtect 是無線入侵防禦類工具，可監測惡意 AP、干擾與可疑無線行為。"},{"id":86,"category":"安全強化","questionEn":"What should be done with past paired Bluetooth devices?","questionZh":"過去配對過的 Bluetooth 裝置應如何處理？","optionsEn":["Keep them for convenience","Regularly check and delete them","Share them with the network","Use them to store keys"],"optionsZh":["為方便永久保留","定期檢查並刪除","分享給網路","用來儲存金鑰"],"answer":1,"explanation":"移除不再使用的配對關係，可減少舊裝置或失竊裝置重新連線的機會。"},{"id":87,"category":"安全強化","questionEn":"In wireless security, why should the network be disabled when not required?","questionZh":"無線網路不需要使用時，為什麼應停用？","optionsEn":["To save battery","To defend against potential attacks","To clear the SSID","To reset the RADIUS server"],"optionsZh":["省電而已","防禦潛在攻擊","清除 SSID","重設 RADIUS"],"answer":1,"explanation":"停用不必要的無線介面能縮短暴露時間並減少可被探索的攻擊面。"},{"id":88,"category":"是非題總複習","questionEn":"Broken Authentication functions include logout, timeouts, and password management","questionZh":"身分驗證失效相關功能包含登出、逾時與密碼管理。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"這些都是身分驗證與工作階段生命週期的重要控制。"},{"id":89,"category":"是非題總複習","questionEn":"Insufficient transport layer protection supports weak algorithms and expired certificates","questionZh":"傳輸層保護不足包含使用弱演算法與過期憑證。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"弱密碼套件或無效憑證會降低加密通訊的可信度。"},{"id":90,"category":"是非題總複習","questionEn":"Most web applications run libraries and frameworks with minimum privileges","questionZh":"多數 Web 應用程式的函式庫與框架都以最低權限執行。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"實務上許多元件可能以過高權限執行，因此元件弱點的影響會被放大。"},{"id":91,"category":"是非題總複習","questionEn":"Burp Suite can find and exploit security vulnerabilities in web applications","questionZh":"Burp Suite 可以尋找並利用 Web 應用程式的安全弱點。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"它提供代理、掃描與手動測試工具，可支援發現和驗證弱點。"},{"id":92,"category":"是非題總複習","questionEn":"Session data should be submitted as part of a GET or POST request for security","questionZh":"為了安全，Session 資料應作為 GET 或 POST 請求的一部分提交。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"敏感 Session 識別資訊不應放在 URL 或一般參數中，應使用安全 Cookie。"},{"id":93,"category":"是非題總複習","questionEn":"Setup roles and accounts should include disabling all default accounts","questionZh":"設定角色與帳號時，應停用所有預設帳號。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"未使用的預設帳號是常見攻擊入口，應停用或嚴格保護。"},{"id":94,"category":"是非題總複習","questionEn":"DSSS spreads a signal over a wider frequency band to protect against interference","questionZh":"DSSS 將訊號擴展到更寬頻帶，以抵抗干擾。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"展頻碼將能量分散到寬頻帶，接收端再以相同碼還原。"},{"id":95,"category":"是非題總複習","questionEn":"IEEE 802.16 is also known as WiMax","questionZh":"IEEE 802.16 也稱為 WiMax。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"802.16 是寬頻無線都會網路標準。"},{"id":96,"category":"是非題總複習","questionEn":"WEP is more secure than WPA2 because it uses a 24-bit IV","questionZh":"WEP 因使用 24-bit IV，所以比 WPA2 更安全。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"短 IV 容易重複，正是 WEP 的重大弱點；WPA2 明顯更安全。"},{"id":97,"category":"是非題總複習","questionEn":"Bluetooth should be kept in the enabled state at all times for maximum security","questionZh":"為了最高安全性，Bluetooth 應永遠保持啟用。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"不使用時停用 Bluetooth 才能減少被探索、配對或攻擊的機會。"},{"id":98,"category":"是非題總複習","questionEn":"SSID broadcasting is considered a misconfiguration that allows SSID theft","questionZh":"SSID 廣播被視為一種設定錯誤，會讓 SSID 容易被取得。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"依本題教材，公開廣播會讓網路名稱直接可見；但隱藏 SSID 並非完整安全措施。"},{"id":99,"category":"是非題總複習","questionEn":"Tactic refers to how an attacker carries out a goal, such as Phishing","questionZh":"Tactic 指攻擊者如何達成目標，例如 Phishing。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"Tactic 是目標；Phishing 這類『如何做』屬於 Technique。"},{"id":100,"category":"是非題總複習","questionEn":"SQL Injection usually occurs because a system fails to properly validate or filter user input","questionZh":"SQL 注入通常源於系統未妥善驗證或過濾使用者輸入。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"更根本的防禦是參數化查詢，確保輸入永遠被當成資料。"},{"id":101,"category":"是非題總複習","questionEn":"Credential Reuse is mainly caused by system vulnerabilities and is unrelated to users choosing convenience","questionZh":"憑證重複使用主要由系統弱點造成，與使用者追求方便無關。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"使用者在多個服務重複密碼，是憑證重複使用攻擊能成功的核心原因。"},{"id":102,"category":"是非題總複習","questionEn":"Browser Hijackers may enter a system through unsafe browser extensions","questionZh":"瀏覽器劫持程式可能透過不安全的瀏覽器擴充功能進入系統。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"惡意或遭入侵的擴充功能可修改搜尋、首頁或攔截瀏覽資料。"},{"id":103,"category":"是非題總複習","questionEn":"An attacker must know the user's password to perform Session Hijacking","questionZh":"攻擊者必須知道使用者密碼，才能進行工作階段劫持。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"若竊得有效 Session Cookie 或 ID，攻擊者可能直接冒用登入狀態。"},{"id":104,"category":"是非題總複習","questionEn":"Bait and Switch attacks are commonly associated with User Execution (T1204) in MITRE","questionZh":"誘餌調包攻擊常與 MITRE 的 User Execution（T1204）相關。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"這類攻擊仰賴使用者點擊或執行內容，因此可對應 User Execution。"},{"id":105,"category":"是非題總複習","questionEn":"Using a VPN can help prevent traffic interception on public Wi-Fi networks","questionZh":"使用 VPN 有助於避免公共 Wi-Fi 上的流量被攔截。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"VPN 在裝置與 VPN 端點間建立加密通道，可降低本地網路竊聽風險。"},{"id":106,"category":"是非題總複習","questionEn":"Technique refers to the specific real-world operational steps performed by an attacker","questionZh":"Technique 指攻擊者在真實世界執行的具體操作步驟。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"Technique 描述一般方法；具體案例與步驟稱為 Procedure。"},{"id":107,"category":"是非題總複習","questionEn":"HTTPS helps protect data in transit and reduces the risk of Man-in-the-Middle attacks","questionZh":"HTTPS 能保護傳輸中的資料並降低中間人攻擊風險。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"TLS 提供加密、完整性與伺服器身分驗證。"},{"id":108,"category":"是非題總複習","questionEn":"One way to prevent Browser Hijackers is to download browser extensions only from third-party software packages","questionZh":"防止瀏覽器劫持的方法之一，是只從第三方軟體包下載瀏覽器擴充功能。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"應從官方擴充套件商店或可信來源安裝，第三方軟體包反而增加風險。"},{"id":109,"category":"是非題總複習","questionEn":"SQL Injection can be used to bypass login pages and read or delete database records","questionZh":"SQL 注入可用來繞過登入頁，並讀取或刪除資料庫紀錄。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"若查詢可被操控，攻擊者可能改變驗證條件或執行未授權資料操作。"},{"id":110,"category":"是非題總複習","questionEn":"Adversary-in-the-Middle describes an attacker positioning themselves between two communicating parties","questionZh":"Adversary-in-the-Middle 描述攻擊者位於兩個通訊方之間。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"攻擊者可在中間觀察、轉送或修改雙方資料。"},{"id":111,"category":"是非題總複習","questionEn":"Initial Access is the first Tactic used by attackers to enter a network","questionZh":"Initial Access 是攻擊者進入網路時使用的第一個戰術。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"它表示攻擊者嘗試取得目標環境立足點的階段。"},{"id":112,"category":"是非題總複習","questionEn":"Network Sniffing refers to the capture of network traffic to obtain sensitive information","questionZh":"Network Sniffing 是擷取網路流量以取得敏感資訊。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"封包擷取可揭露未加密憑證、內容或通訊模式。"},{"id":113,"category":"是非題總複習","questionEn":"Understanding an attacker's Tactic (objective) helps analysts connect evidence to appropriate mitigations","questionZh":"理解攻擊者的 Tactic（目標）有助分析師把證據連結到適當緩解措施。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"先辨識攻擊目的，再對應技術與控制，能讓調查和防禦更有結構。"},{"id":114,"category":"是非題總複習","questionEn":"You should obtain documented approval and a signature agreeing not to hold you liable for unintentional bad things","questionZh":"應取得書面許可與簽名，同意不因非故意造成的不良結果追究你的責任。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"正式授權與責任條款能界定允許行為和意外風險。"},{"id":115,"category":"是非題總複習","questionEn":"Ethical hacking is a one-time event that does not need to be repeated","questionZh":"道德駭客是一次性的活動，不需要重複執行。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"威脅、系統與設定持續變化，因此測試必須定期重做。"},{"id":116,"category":"是非題總複習","questionEn":"Penetration Testing evaluates procedural, operational, and technological controls","questionZh":"滲透測試會評估程序、營運與技術控制。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"有效測試不只看軟體弱點，也檢查流程和實際營運控制。"},{"id":117,"category":"是非題總複習","questionEn":"Covert Penetration Testing most closely simulates a true adversarial attack","questionZh":"隱蔽式滲透測試最接近真實敵手攻擊的模擬。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"少數人知情可同時測試偵測與事件應變能力。"},{"id":118,"category":"是非題總複習","questionEn":"The purpose of WHOIS is to exploit the target's database directly","questionZh":"WHOIS 的目的是直接利用目標資料庫。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":1,"explanation":"WHOIS 用於查詢網域註冊資訊，是偵察工具而非資料庫利用工具。"},{"id":119,"category":"是非題總複習","questionEn":"Password cracking and network analyzers should generally be removed from the final report to prevent abuse","questionZh":"密碼破解工具與網路分析器通常應從最終報告移除，以防濫用。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"管理版報告應聚焦風險與修補，避免提供可直接複製的攻擊操作細節。"},{"id":120,"category":"是非題總複習","questionEn":"Mastery of Linux network interfaces is required before launching many security tools","questionZh":"在啟動許多安全工具前，必須熟悉 Linux 網路介面。","optionsEn":["True","False"],"optionsZh":["正確","錯誤"],"answer":0,"explanation":"介面狀態、位址與路由設定會直接影響掃描、嗅探與封包操作。"}];
+    const STORAGE_KEY = "cyber-review-lab-v1";
+    const state = {
+      currentId: 1,
+      selected: null,
+      category: "全部分類",
+      mode: "all",
+      showTranslation: true,
+      results: loadResults()
+    };
+
+    const els = {
+      card: document.querySelector("#questionCard"), grid: document.querySelector("#questionGrid"),
+      category: document.querySelector("#categoryFilter"), mode: document.querySelector("#modeFilter"),
+      translation: document.querySelector("#translationToggle"), random: document.querySelector("#randomButton"),
+      reset: document.querySelector("#resetButton"), done: document.querySelector("#doneStat"),
+      correct: document.querySelector("#correctStat"), accuracy: document.querySelector("#accuracyStat"),
+      progressLabel: document.querySelector("#progressLabel"), progressFill: document.querySelector("#progressFill")
+    };
+
+    function loadResults() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+      catch { return {}; }
+    }
+    function saveResults() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.results)); }
+    function visibleQuestions() {
+      return QUESTIONS.filter(q => {
+        const categoryOK = state.category === "全部分類" || q.category === state.category;
+        const result = state.results[q.id];
+        const modeOK = state.mode === "all" ||
+          (state.mode === "unanswered" && !result) ||
+          (state.mode === "wrong" && result && !result.correct) ||
+          (state.mode === "correct" && result && result.correct);
+        return categoryOK && modeOK;
+      });
+    }
+    function currentQuestion() { return QUESTIONS.find(q => q.id === state.currentId); }
+    function optionLabel(q, index, lang) {
+      const source = lang === "zh" ? q.optionsZh : q.optionsEn;
+      return source[index] || "";
+    }
+    function renderCard() {
+      const visible = visibleQuestions();
+      if (!visible.length) {
+        els.card.innerHTML = '<div class="empty"><h2>這個篩選目前沒有題目</h2><p>可以切換分類或練習模式。</p></div>';
+        return;
+      }
+      if (!visible.some(q => q.id === state.currentId)) state.currentId = visible[0].id;
+      const q = currentQuestion();
+      const result = state.results[q.id];
+      if (result) state.selected = result.selected;
+      const options = q.optionsEn.map((option, index) => {
+        const key = String.fromCharCode(65 + index);
+        const classes = ["option"];
+        if (state.selected === index) classes.push("selected");
+        if (result && index === q.answer) classes.push("correct");
+        if (result && index === result.selected && !result.correct) classes.push("wrong");
+        return `<button type="button" class="${classes.join(" ")}" data-option="${index}" ${result ? "disabled" : ""}>
+          <span class="option-key">${key}</span><span><div class="option-en">${escapeHtml(option)}</div>
+          ${state.showTranslation ? `<div class="option-zh">${escapeHtml(optionLabel(q, index, "zh"))}</div>` : ""}</span></button>`;
+      }).join("");
+      const explanationClass = result ? (result.correct ? "good" : "bad") : "";
+      const resultTitle = result ? (result.correct ? "答對了，觀念有抓到。" : "這題答錯了，現在把關鍵補起來。") : "";
+      els.card.innerHTML = `
+        <div class="question-top"><span class="pill">${escapeHtml(q.category)}</span><span class="number">QUESTION ${q.id} / ${QUESTIONS.length}</span></div>
+        <div class="language-block"><div class="lang-label">ENGLISH · 原始題目</div><h2 class="question-text">${escapeHtml(q.questionEn)}</h2></div>
+        ${state.showTranslation ? `<div class="language-block translation"><div class="lang-label">中文翻譯</div><h2 class="question-text">${escapeHtml(q.questionZh)}</h2></div>` : ""}
+        <div class="options">${options}</div>
+        <div class="actions">
+          <button type="button" class="ghost" id="prevQuestion">上一題</button>
+          <button type="button" class="ghost" id="nextQuestion">下一題</button>
+          ${result && !result.correct ? '<button type="button" class="ghost" id="retryQuestion">重答本題</button>' : ""}
+        </div>
+        <div class="explanation ${result ? "show" : ""} ${explanationClass}">
+          <div class="result-title">${resultTitle}</div>
+          <div class="answer-line">正確答案：${String.fromCharCode(65 + q.answer)} · ${escapeHtml(q.optionsZh[q.answer])}</div>
+          <div>${escapeHtml(q.explanation)}</div>
+        </div>`;
+      bindCardEvents();
+    }
+    function bindCardEvents() {
+      document.querySelectorAll("[data-option]").forEach(button => button.addEventListener("click", () => {
+        state.selected = Number(button.dataset.option); submitAnswer();
+      }));
+      document.querySelector("#prevQuestion")?.addEventListener("click", () => move(-1));
+      document.querySelector("#nextQuestion")?.addEventListener("click", () => move(1));
+      document.querySelector("#retryQuestion")?.addEventListener("click", () => {
+        delete state.results[state.currentId]; saveResults(); state.selected = null; renderAll();
+      });
+    }
+    function submitAnswer() {
+      const q = currentQuestion();
+      if (state.selected === null || state.results[q.id]) return;
+      state.results[q.id] = { selected: state.selected, correct: state.selected === q.answer };
+      saveResults(); renderAll();
+    }
+    function move(direction) {
+      const list = visibleQuestions();
+      if (!list.length) return;
+      const index = Math.max(0, list.findIndex(q => q.id === state.currentId));
+      state.currentId = list[(index + direction + list.length) % list.length].id;
+      state.selected = null; renderAll(); window.scrollTo({ top: document.querySelector(".toolbar").offsetTop - 5, behavior: "smooth" });
+    }
+    function renderGrid() {
+      const visibleIds = new Set(visibleQuestions().map(q => q.id));
+      els.grid.innerHTML = QUESTIONS.filter(q => visibleIds.has(q.id)).map(q => {
+        const result = state.results[q.id];
+        const cls = result ? (result.correct ? "correct" : "wrong") : "";
+        return `<button class="qdot ${cls} ${q.id === state.currentId ? "current" : ""}" data-id="${q.id}" title="第 ${q.id} 題">${q.id}</button>`;
+      }).join("");
+      els.grid.querySelectorAll("[data-id]").forEach(b => b.addEventListener("click", () => {
+        state.currentId = Number(b.dataset.id); state.selected = null; renderAll();
+      }));
+    }
+    function renderStats() {
+      const values = Object.values(state.results);
+      const done = values.length;
+      const correct = values.filter(x => x.correct).length;
+      els.done.textContent = done; els.correct.textContent = correct;
+      els.accuracy.textContent = done ? `${Math.round(correct / done * 100)}%` : "—";
+      els.progressLabel.textContent = `已完成 ${done} / ${QUESTIONS.length}`;
+      els.progressFill.style.width = `${done / QUESTIONS.length * 100}%`;
+    }
+    function renderAll() { renderCard(); renderGrid(); renderStats(); }
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[c]);
+    }
+    function init() {
+      const categories = ["全部分類", ...new Set(QUESTIONS.map(q => q.category))];
+      els.category.innerHTML = categories.map(x => `<option>${escapeHtml(x)}</option>`).join("");
+      els.category.addEventListener("change", e => { state.category = e.target.value; state.selected = null; renderAll(); });
+      els.mode.addEventListener("change", e => { state.mode = e.target.value; state.selected = null; renderAll(); });
+      els.translation.addEventListener("click", () => {
+        state.showTranslation = !state.showTranslation;
+        els.translation.textContent = `中文翻譯：${state.showTranslation ? "開" : "關"}`;
+        els.translation.classList.toggle("active", state.showTranslation); renderCard();
+      });
+      els.random.addEventListener("click", () => {
+        const list = visibleQuestions(); if (!list.length) return;
+        state.currentId = list[Math.floor(Math.random() * list.length)].id; state.selected = null; renderAll();
+      });
+      els.reset.addEventListener("click", () => {
+        if (!confirm("確定清除所有作答進度嗎？")) return;
+        state.results = {}; state.selected = null; saveResults(); renderAll();
+      });
+      document.addEventListener("keydown", e => {
+        if (["1","2","3","4"].includes(e.key) && !state.results[state.currentId]) {
+          const index = Number(e.key) - 1; if (index < currentQuestion().optionsEn.length) { state.selected = index; submitAnswer(); }
+        }
+        else if (e.key === "ArrowLeft") move(-1);
+        else if (e.key === "ArrowRight") move(1);
+      });
+      renderAll();
+    }
+    init();
+  </script>
+</body>
+</html>
